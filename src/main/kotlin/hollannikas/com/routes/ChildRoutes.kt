@@ -12,11 +12,7 @@ import io.ktor.routing.*
 fun Route.childRouting() {
     route("/child") {
         get {
-            if (database.isNotEmpty()) {
-                call.respond(database)
-            } else {
-                call.respondText("No children found", status = HttpStatusCode.NotFound)
-            }
+            call.respond(database)
         }
         get("{id}") {
             val id = call.parameters["id"] ?: return@get call.respondText(

@@ -1,20 +1,17 @@
 package hollannikas.com
 
-import io.ktor.routing.*
 import io.ktor.http.*
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import kotlin.test.*
 import io.ktor.server.testing.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ApplicationTest {
     @Test
-    fun testRoot() {
+    fun `return empty array if there are no children`() {
         withTestApplication({ module(testing = true) }) {
-            handleRequest(HttpMethod.Get, "/").apply {
+            handleRequest(HttpMethod.Get, "/child").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals("Hello World!", response.content)
+                assertEquals("[]", response.content)
             }
         }
     }
