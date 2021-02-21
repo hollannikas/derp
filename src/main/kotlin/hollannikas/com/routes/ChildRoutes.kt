@@ -32,7 +32,7 @@ fun Route.childRouting() {
             // we should be accessing a mutable list in a thread-safe manner.
             // However, in production code we wouldn't be using mutable lists as a database!
             database.add(customer)
-            call.respondText("Child stored correctly", status = HttpStatusCode.Accepted)
+            call.respondText(customer.id, status = HttpStatusCode.Accepted)
         }
         delete("{id}") {
             val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
