@@ -1,12 +1,9 @@
 package hollannikas.com
 
 import hollannikas.com.routes.registerChildRoutes
-import io.ktor.routing.*
-import io.ktor.http.*
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.features.*
-import io.ktor.response.*
-import io.ktor.request.*
 import io.ktor.serialization.*
 
 fun main(args: Array<String>): Unit =
@@ -19,6 +16,18 @@ fun main(args: Array<String>): Unit =
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+    install(Authentication) {
+        basic(name = "derp-auth") {
+            realm = "Ktor Server"
+            validate { credentials ->
+                if (credentials.name == credentials.password) {
+                    UserIdPrincipal(credentials.name)
+                } else {
+                    null
+                }
+            }
+        }
+    }
     install(ContentNegotiation) {
         json()
     }

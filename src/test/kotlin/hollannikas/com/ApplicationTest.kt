@@ -44,4 +44,13 @@ class ApplicationTest {
             }
         }
     }
+
+    @Test
+    fun `only authenticated users can delete`() {
+        withTestApplication({ module(testing = true) }) {
+            handleRequest(HttpMethod.Delete, "/child/1").apply {
+                assertEquals(HttpStatusCode.Unauthorized, response.status())
+            }
+        }
+    }
 }

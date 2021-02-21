@@ -3,6 +3,7 @@ package hollannikas.com.routes
 import hollannikas.com.models.Child
 import hollannikas.com.models.database
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -34,12 +35,14 @@ fun Route.childRouting() {
             database.add(customer)
             call.respondText(customer.id, status = HttpStatusCode.Accepted)
         }
-        delete("{id}") {
-            val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
-            if (database.removeIf { it.id == id }) {
-                call.respondText("Child removed correctly", status = HttpStatusCode.Accepted)
-            } else {
-                call.respondText("Not Found", status = HttpStatusCode.NotFound)
+        authenticate("derp-auth") {
+            delete("{id}") {
+                val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+                if (database.removeIf { it.id == id }) {
+                    call.respondText("Child removed correctly", status = HttpStatusCode.Accepted)
+                } else {
+                    call.respondText("Not Found", status = HttpStatusCode.NotFound)
+                }
             }
         }
     }
