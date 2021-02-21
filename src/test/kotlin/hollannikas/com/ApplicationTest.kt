@@ -1,14 +1,21 @@
 package hollannikas.com
 
 import hollannikas.com.models.Child
+import hollannikas.com.models.database
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ApplicationTest {
+    @BeforeTest
+    fun clear() {
+        database.clear()
+    }
+
     @Test
     fun `return empty array if there are no children`() {
         withTestApplication({ module(testing = true) }) {
